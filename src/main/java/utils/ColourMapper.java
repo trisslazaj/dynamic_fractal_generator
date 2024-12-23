@@ -11,14 +11,18 @@ public class ColourMapper {
 
     public Color map(int iteration) {
         if (iteration >= maxIterations) {
-            return Color.BLACK; // Points inside the Mandelbrot set remain black
+            return Color.BLACK;
         }
 
-        // Smooth color gradient for points outside the Mandelbrot set
-        double hue = 240.0 - (240.0 * iteration / maxIterations); // Blue to light tones
-        double saturation = 0.6; // Softer saturation
-        double brightness = 0.7; // Lighter brightness for outside
+        double t = (double) iteration / maxIterations;
+        double r = 9 * (1 - t) * t * t * t;
+        double g = 15 * (1 - t) * (1 - t) * t * t;
+        double b = 8.5 * (1 - t) * (1 - t) * (1 - t) * t;
 
-        return Color.hsb(hue, saturation, brightness);
+        return Color.color(clamp(r), clamp(g), clamp(b));
+    }
+
+    private double clamp(double value) {
+        return Math.min(1.0, Math.max(0.0, value));
     }
 }
